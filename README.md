@@ -1,6 +1,6 @@
 # Joost's C++ utilities
 
-Just a few simple transformations to speed up coding in c++.
+Just a few simple transformations to speed up c++ coding in VS Code.
 
 Given a set of property declarations, eg:
 
