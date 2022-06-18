@@ -9,6 +9,8 @@ interface IProperty {
 
 function stringToPropertyDeclarations(str: string) : Array<IProperty>
 {
+	str = str.replace(/\/\/.*\n/g, "\n");
+	str = str.replace(/\/\*.*\*\//g, "");
 	return str.split(/\s*;\s*/).map(line => line.trim()).filter(line => line.length > 0).map(line => {
 		const matches = line.match(/^\s*(.+)\s+([a-zA-Z0-9_]+)\s*;*\s*$/);
 		if(!matches)
@@ -37,9 +39,10 @@ function createGetterSetter(propertyDeclarations: Array<IProperty>)
 			getterName = "Get" + w;
 			setterName = "Set" + w;
 		}
+		const parameterName = propertyName2Parameter(prop.propertyName);
 		return `const ${prop.typeName}& ${getterName}() const { return ${prop.propertyName}; }
-void ${setterName}(const ${prop.typeName}& v) { ${prop.propertyName} = v; }
-void ${setterName}(${prop.typeName}&& v) { ${prop.propertyName} = std::move(v); }
+void ${setterName}(const ${prop.typeName}& ${parameterName}) { ${prop.propertyName} = ${parameterName}; }
+void ${setterName}(${prop.typeName}&& ${parameterName}) { ${prop.propertyName} = std::move(${parameterName}); }
 `;
 	}).join("");
 }
@@ -49,19 +52,22 @@ function createPropertyList(propertyDeclarations: Array<IProperty>)
 	return propertyDeclarations.map( prop => prop.propertyName).join(", ")+"\n";
 }
 
+function propertyName2Parameter(propertyName: string)
+{
+	const matches = propertyName.match(/^m_(.+)$/);
+	if(matches)
+	{
+		return matches[1].charAt(0).toLowerCase() + matches[1].slice(1);
+	}
+	else
+	{
+		return "_"+propertyName.charAt(0).toLowerCase() + propertyName.slice(1);
+	}
+}
+
 function createConstructor(propertyDeclarations: Array<IProperty>)
 {
-	const parameterNames = propertyDeclarations.map(prop => prop.propertyName).map(name => {
-		const matches = name.match(/^m_(.+)$/);
-		if(matches)
-		{
-			return matches[1].charAt(0).toLowerCase() + matches[1].slice(1);
-		}
-		else
-		{
-			return "_"+name.charAt(0).toLowerCase() + name.slice(1);
-		}
-	});
+	const parameterNames = propertyDeclarations.map(prop => prop.propertyName).map(propertyName2Parameter);
 	const constructorParams = propertyDeclarations.map( (prop, index) => {
 		return `const ${prop.typeName}& ${parameterNames[index]}`;
 	}).join(", ");
