@@ -1,12 +1,13 @@
 {
 	"author": "Joost Nieuwenhuijse",
-	"name": "jcpp",
+    "name": "jcpp",
 	"displayName": "Joost's c++ utilities",
 	"description": "Just a few simple transformations to speed up c++ coding in VS Code.",
 	"repository": "https://github.com/joostn/jcpp",
 	"publisher": "newhousenl",
 	"license": "See LICENSE",
-	"version": "1.1.0",
+	"version": "1.0.1",
+
 	"engines": {
 		"vscode": "^1.68.0"
 	},
@@ -14,14 +15,12 @@
 		"Programming Languages"
 	],
 	"keywords": [
-		"c++",
-		"getter",
-		"setter"
+		"c++", "getter", "setter"
 	],
 	"activationEvents": [
-		"onCommand:jcpp.encapsulate",
-		"onCommand:jcpp.createConstructor",
-		"onCommand:jcpp.createPropertyList"
+        "onCommand:jcpp.encapsulate",
+        "onCommand:jcpp.createConstructor",
+        "onCommand:jcpp.createPropertyList"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
