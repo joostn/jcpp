@@ -1,14 +1,21 @@
 {
 	"author": "Joost Nieuwenhuijse",
     "name": "jcpp",
-	"displayName": "jcpp",
-	"description": "Joost's cpp utilities (vs code extension)",
-	"version": "0.0.1",
+	"displayName": "Joost's c++ utilities",
+	"description": "Just a few simple transformations to speed up c++ coding in VS Code.",
+	"repository": "https://github.com/joostn/jcpp",
+	"publisher": "newhousenl",
+	"license": "See LICENSE",
+	"version": "1.0.1",
+
 	"engines": {
 		"vscode": "^1.68.0"
 	},
 	"categories": [
-		"Other"
+		"Programming Languages"
+	],
+	"keywords": [
+		"c++", "getter", "setter"
 	],
 	"activationEvents": [
         "onCommand:jcpp.encapsulate",
@@ -38,7 +45,9 @@
 		"watch": "tsc -watch -p ./",
 		"pretest": "npm run compile && npm run lint",
 		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js"
+		"test": "node ./out/test/runTest.js",
+		"package": "vsce package",
+		"publish": "vsce publish"
 	},
 	"devDependencies": {
 		"@types/vscode": "^1.68.0",
